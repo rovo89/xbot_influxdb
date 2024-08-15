@@ -85,14 +85,19 @@ def on_xbot_driver_gps_xb_pose(msg):
 
 def wifi(interface):
   while True:
-    wifi = get_iwconfig(interface)
-    write_api.write(bucket=BUCKET, record={
-      'measurement': 'wifi',
-      'fields': {
-        'access_point': wifi['Access Point'].decode('utf-8'),
-        'rssi': wifi['stats']['level'] - 256,
-      },
-    })
+    try:
+      wifi = get_iwconfig(interface)
+      write_api.write(bucket=BUCKET, record={
+        'measurement': 'wifi',
+        'fields': {
+          'access_point': wifi['Access Point'].decode('utf-8'),
+          'rssi': wifi['stats']['level'] - 256,
+          'quality': wifi['stats']['quality'],
+          'level': wifi['stats']['level'],
+        },
+      })
+    except Exception as e:
+      rospy.logerr(e)
     time.sleep(MIN_INTERVAL)
 
 if __name__ == '__main__':
