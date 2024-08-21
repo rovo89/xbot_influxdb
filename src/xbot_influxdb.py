@@ -33,6 +33,9 @@ def on_mower_logic_current_state(msg):
     'fields': {
       'state_name': msg.state_name,
       'sub_state_name': msg.sub_state_name,
+      'current_area': msg.current_area,
+      'current_path': msg.current_path,
+      'current_path_index': msg.current_path_index,
       'is_charging': msg.is_charging,
     },
   })
